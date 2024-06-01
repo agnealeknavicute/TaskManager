@@ -1,0 +1,38 @@
+<div>
+    <div class="form">
+        <h2 class="text-lg mb-5">Add new task</h2>
+
+          <div class="formField">
+            <div>
+              <input (change)="handleTitleChange($any($event.target).value)" [value]='title' placeholder='Title' type="text" class="focus:outline-none focus:border-orange-400 focus:ring-orange-400 focus:ring-1">
+          </div>
+          <div class="textArea ">
+            <textarea (change)="handleDescriptionChange($any($event.target).value)" class="focus:outline-none focus:border-orange-400 focus:ring-orange-400 focus:ring-1
+             min-h-16" [value]="description" placeholder='Description' ></textarea>
+        </div>
+        <p class="pb-2">Urgency:</p>
+        <div class="flex justify-between w-1/2 ml-2 text-xs">
+          <p>Low</p>
+          <p>Medium</p>
+          <p>High</p>
+
+        </div>
+        <div>
+          
+          <mat-slider min="1" max="3" step="1">
+              <input (change)="handleSliderChange($event)" matSliderThumb value="2">
+            </mat-slider>
+      </div>
+          </div>
+
+
+          
+
+
+        </div>
+        <div class="formSubmit">
+            <button (click)="submitTask()" class="formSubmitBtn hover:bg-orange-500">
+                Add
+              </button>
+          </div>
+</div>
