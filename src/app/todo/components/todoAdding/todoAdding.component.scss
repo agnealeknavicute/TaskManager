@@ -4,11 +4,9 @@
 
 
 @mixin customInput {
-    height: 40px;
     border: 1px solid grey;
     border-radius: 5px;
     font-size: medium;
-    margin-bottom: 20px;
     &::placeholder {
         color: gray;
     }

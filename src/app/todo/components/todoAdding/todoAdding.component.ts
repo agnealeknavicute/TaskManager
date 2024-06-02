@@ -6,6 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSliderModule } from '@angular/material/slider';
 import { CommonModule } from '@angular/common';
 import { TaskService } from '../../services/todo.services';
+import { ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'todo-add',
@@ -18,12 +20,20 @@ import { TaskService } from '../../services/todo.services';
     MatInputModule,
     MatSelectModule,
     MatSliderModule,
+    ReactiveFormsModule,
   ],
 })
-export class TodoAddingComponent implements ITask {
+export class TodoAddingComponent implements Partial<ITask> {
+  taskForm = new FormGroup({
+    title: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    description: new FormControl('', [
+      Validators.required,
+      Validators.minLength(7),
+    ]),
+    rawType: new FormControl('2'),
+  });
+  name = new FormControl('');
   id = 0;
-  title = '';
-  description = '';
   type = TaskTypes.LowUrgency;
   createdOn = null;
   status = TaskStatus.NotStarted;
@@ -31,28 +41,12 @@ export class TodoAddingComponent implements ITask {
 
   constructor(private taskService: TaskService) {}
 
-  handleSliderChange(event: Event) {
-    switch ((event.target as HTMLInputElement).value) {
-      case '1':
-        this.type = this.TaskTypes.LowUrgency;
-        break;
-      case '2':
-        this.type = this.TaskTypes.MediumUrgency;
-        break;
-      case '3':
-        this.type = this.TaskTypes.HighUrgency;
-        break;
-    }
-  }
-  handleTitleChange(title: string) {
-    this.title = title;
-  }
-  handleDescriptionChange(description: string) {
-    this.description = description;
+  isInvalid(controlName: string) {
+    const control = this.taskForm.get(controlName);
+    return control && control.invalid && (control.dirty || control.touched);
   }
   submitTask() {
     const date = new Date();
-
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear() % 100;
@@ -63,15 +57,27 @@ export class TodoAddingComponent implements ITask {
     const formattedDate = `${formattedDay}.${formattedMonth}.${formattedYear}`;
     const id = Date.now();
 
-    const task: ITask = {
-      id: id,
-      title: this.title,
-      description: this.description,
-      type: this.type,
-      createdOn: formattedDate,
-      status: this.status,
-    };
-    console.log(task);
-    this.taskService.addTask(task);
+    switch (this.taskForm.value.rawType) {
+      case '1':
+        this.type = this.TaskTypes.LowUrgency;
+        break;
+      case '2':
+        this.type = this.TaskTypes.MediumUrgency;
+        break;
+      case '3':
+        this.type = this.TaskTypes.HighUrgency;
+        break;
+    }
+    if (this.taskForm.value.title && this.taskForm.value.description) {
+      const task: ITask = {
+        id: id,
+        title: this.taskForm.value.title,
+        description: this.taskForm.value.description,
+        type: this.type,
+        createdOn: formattedDate,
+        status: this.status,
+      };
+      this.taskService.addTask(task);
+    }
   }
 }
