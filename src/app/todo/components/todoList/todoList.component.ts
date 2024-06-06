@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ITask } from '../../types/todo.interface';
+import { ITask } from '../../models/todo.interface';
 import { TaskService } from '../../services/todo.services';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'mc-todolist',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './todoList.component.html',
   styleUrls: ['./todoList.component.scss'],
 })

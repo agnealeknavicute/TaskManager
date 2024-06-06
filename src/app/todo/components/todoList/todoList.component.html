@@ -1,4 +1,4 @@
-<div class="w-full">
+<div class="w-2/6 mx-auto py-12 bg-stone-200 px-6 rounded-lg mt-10">
         <!-- <p>{{task.title}}</p> -->
         <!-- <todo-item/> -->
         @if (tasks.length < 1) {
@@ -9,7 +9,8 @@
                 <ul>
                         
                         @for (task of tasks; track task) {
-                                <li class="bg-white py-2 px-4 rounded-lg mb-5">
+                                <a [routerLink]="['/todoItem-component/', task.id]">
+                                <li class="bg-white hover:cursor-pointer hover:border hover:boder hover:border-orange-500 py-2 px-4 rounded-lg mb-5">
                                         <div class="flex justify-between items-center pb-2">
                                                 <p class="text-base ">{{task.title}}</p>
                                                 <p class="text-xs">{{task.status}}</p>
@@ -26,6 +27,7 @@
                                                 </button>
                                         </div>
                                 </li>
+                        </a>
                                 
                         }
                 </ul>

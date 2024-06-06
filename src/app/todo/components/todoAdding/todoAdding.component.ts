@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ITask, TaskStatus, TaskTypes } from '../../types/todo.interface';
+import { ITask, TaskStatus, TaskTypes } from '../../models/todo.interface';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';

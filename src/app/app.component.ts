@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TodoListComponent } from './todo/components/todoList/todoList.component';
 import { TodoAddingComponent } from './todo/components/todoAdding/todoAdding.component';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,8 @@ import { TodoAddingComponent } from './todo/components/todoAdding/todoAdding.com
     MatSlideToggleModule,
     TodoListComponent,
     TodoAddingComponent,
+    RouterLink,
+    RouterLinkActive,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
