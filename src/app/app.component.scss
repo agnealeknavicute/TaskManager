@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.app {
+    padding: 50px 30px;
+    border-radius: 10%;
+    background: rgb(2, 48, 71, 0.1);
+    margin: 20px auto;
+    
+}
+
+.todo{
+    display: flex;
+    justify-content: space-between;
+    &List {
+
+    }
+    &Add {
+
+    }
+}
