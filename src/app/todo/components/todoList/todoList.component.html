@@ -1,24 +1,29 @@
-<div class="w-2/6 mx-auto py-12 bg-stone-200 px-6 rounded-lg mt-10">
-        <!-- <p>{{task.title}}</p> -->
-        <!-- <todo-item/> -->
+<div class="md:w-2/6 w-4/5 mx-auto py-12 bg-stone-200 px-6 rounded-lg mt-10">
+
         @if (tasks.length < 1) {
                 <div class="bg-white py-2 px-4 rounded-lg">
                         You don't have any tasks so far... let's fix it!
                 </div>
         } @else {
-                <ul>
+                <ul >
                         
-                        @for (task of tasks; track task) {
-                                <a [routerLink]="['/todoItem-component/', task.id]">
+                        @for (task of tasks.reverse(); track task) {
+                                
                                 <li class="bg-white hover:cursor-pointer hover:border hover:boder hover:border-orange-500 py-2 px-4 rounded-lg mb-5">
+                                        <a [routerLink]="['/todoItem-component/', task.id]">
+
                                         <div class="flex justify-between items-center pb-2">
                                                 <p class="text-base ">{{task.title}}</p>
                                                 <p class="text-xs">{{task.status}}</p>
+
                                         </div>
+
                                         <p>{{task.description}}</p>
+                                </a>
+
                                         <div class="flex text-xs justify-between pt-4">
                                                 <span>{{task.type}}</span>
-                                                <span>{{task.createdOn}}</span>
+                                                <span>{{task.date}}</span>
                                         </div>
                                 
                                         <div class="text-right">
@@ -27,7 +32,6 @@
                                                 </button>
                                         </div>
                                 </li>
-                        </a>
                                 
                         }
                 </ul>

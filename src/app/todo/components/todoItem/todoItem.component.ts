@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { TaskService } from '../../services/todo.services';
 import { ITask } from '../../models/todo.interface';
 import { switchMap } from 'rxjs/operators';
+import { TaskApiService } from '../../services/task-api.service';
 
 @Component({
   selector: 'todo-item',
@@ -16,18 +17,25 @@ import { switchMap } from 'rxjs/operators';
 export class TodoItemComponent implements OnInit {
   taskItem: Observable<ITask | null> = of(null);
 
-  constructor(private route: ActivatedRoute, private service: TaskService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private taskApi: TaskApiService,
+    private service: TaskService
+  ) {}
 
   deleteTask(id: number) {
-    this.service.deleteTask(id);
-    this.taskItem = of(null);
+    this.service.deleteTask(id).subscribe({
+      next: (value) => {
+        this.taskItem = of(null);
+      },
+    });
   }
 
   ngOnInit(): void {
     this.taskItem = this.route.paramMap.pipe(
       switchMap((params) => {
         const taskId = Number(params.get('id'));
-        return this.service.getTask(taskId);
+        return this.taskApi.getTask(`http://localhost:3001/api/todo`, taskId);
       })
     );
   }

@@ -8,6 +8,8 @@ import { CommonModule } from '@angular/common';
 import { TaskService } from '../../services/todo.services';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormGroup, FormControl } from '@angular/forms';
+import { TaskApiService } from '../../services/task-api.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'todo-add',
@@ -30,7 +32,7 @@ export class TodoAddingComponent implements Partial<ITask> {
       Validators.required,
       Validators.minLength(7),
     ]),
-    rawType: new FormControl('2'),
+    rawType: new FormControl(2),
   });
   name = new FormControl('');
   id = 0;
@@ -39,7 +41,10 @@ export class TodoAddingComponent implements Partial<ITask> {
   status = TaskStatus.NotStarted;
   TaskTypes = TaskTypes;
 
-  constructor(private taskService: TaskService) {}
+  constructor(
+    private taskService: TaskService,
+    private taskApi: TaskApiService
+  ) {}
 
   isInvalid(controlName: string) {
     const control = this.taskForm.get(controlName);
@@ -58,13 +63,13 @@ export class TodoAddingComponent implements Partial<ITask> {
     const id = Date.now();
 
     switch (this.taskForm.value.rawType) {
-      case '1':
+      case 1:
         this.type = this.TaskTypes.LowUrgency;
         break;
-      case '2':
+      case 2:
         this.type = this.TaskTypes.MediumUrgency;
         break;
-      case '3':
+      case 3:
         this.type = this.TaskTypes.HighUrgency;
         break;
     }
@@ -74,10 +79,22 @@ export class TodoAddingComponent implements Partial<ITask> {
         title: this.taskForm.value.title,
         description: this.taskForm.value.description,
         type: this.type,
-        createdOn: formattedDate,
+        date: formattedDate,
         status: this.status,
       };
-      this.taskService.addTask(task);
+      // this.taskService.addTask(task);
+      this.taskApi.post('http://localhost:3001/api/todo', task).subscribe({
+        next: (res) => {
+          console.log(res);
+        },
+        error: (err) => {
+          console.error('Error fetching tasks', err);
+        },
+      });
+      this.taskForm.reset();
+      this.id = 0;
+      this.type = TaskTypes.MediumUrgency;
+      this.status = TaskStatus.NotStarted;
     }
   }
 }
