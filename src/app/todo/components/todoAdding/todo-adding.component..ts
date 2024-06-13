@@ -14,8 +14,8 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'todo-add',
   standalone: true,
-  templateUrl: './todoAdding.component.html',
-  styleUrl: './todoAdding.component.scss',
+  templateUrl: './todo-adding.component.html',
+  styleUrl: './todo-adding.component.scss',
   imports: [
     CommonModule,
     MatFormFieldModule,
@@ -41,10 +41,7 @@ export class TodoAddingComponent implements Partial<ITask> {
   status = TaskStatus.NotStarted;
   TaskTypes = TaskTypes;
 
-  constructor(
-    private taskService: TaskService,
-    private taskApi: TaskApiService
-  ) {}
+  constructor(private taskService: TaskService) {}
 
   isInvalid(controlName: string) {
     const control = this.taskForm.get(controlName);
@@ -82,15 +79,7 @@ export class TodoAddingComponent implements Partial<ITask> {
         date: formattedDate,
         status: this.status,
       };
-      // this.taskService.addTask(task);
-      this.taskApi.post('http://localhost:3001/api/todo', task).subscribe({
-        next: (res) => {
-          console.log(res);
-        },
-        error: (err) => {
-          console.error('Error fetching tasks', err);
-        },
-      });
+      this.taskService.addTask(task).subscribe();
       this.taskForm.reset();
       this.id = 0;
       this.type = TaskTypes.MediumUrgency;

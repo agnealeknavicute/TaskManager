@@ -15,18 +15,16 @@ export class TaskService {
   constructor(private taskApi: TaskApiService) {}
 
   getTasks(): Observable<ITask[]> {
-    return this.taskApi.get('http://localhost:3001/api/todos');
+    return this.taskApi.getTasksApi();
   }
 
-  addTask(task: ITask): void {
-    this.tasks.push(task);
-    this.tasksSubject.next(this.tasks);
+  addTask(task: ITask): Observable<ITask> {
+    return this.taskApi.postTaskApi(task);
   }
   deleteTask(id: number): Observable<ITask[]> {
-    return this.taskApi.deleteTask('http://localhost:3001/api/todoDelete', id);
+    return this.taskApi.deleteTaskApi(id);
   }
   getTask(id: number): Observable<ITask | null> {
-    const foundTask = this.tasks.find((task) => task.id === id);
-    return of(foundTask || null);
+    return this.taskApi.getTaskApi(id);
   }
 }

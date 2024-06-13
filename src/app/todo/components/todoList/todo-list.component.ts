@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ITask } from '../../models/todo.interface';
 import { TaskService } from '../../services/todo.services';
 import { RouterLink } from '@angular/router';
 import { TaskApiService } from '../../services/task-api.service';
 import { error } from 'console';
+import { AutoUnsub } from '../../../core/decorators/auto-unsub.decorator';
 
 @Component({
-  selector: 'mc-todolist',
+  selector: 'app-todolist',
   standalone: true,
   imports: [RouterLink],
-  templateUrl: './todoList.component.html',
-  styleUrls: ['./todoList.component.scss'],
+  templateUrl: './todo-list.component.html',
+  styleUrls: ['./todo-list.component.scss'],
 })
+@AutoUnsub()
 export class TodoListComponent implements OnInit {
   tasks: ITask[] = [];
 

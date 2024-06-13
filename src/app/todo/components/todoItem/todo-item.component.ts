@@ -6,26 +6,24 @@ import { TaskService } from '../../services/todo.services';
 import { ITask } from '../../models/todo.interface';
 import { switchMap } from 'rxjs/operators';
 import { TaskApiService } from '../../services/task-api.service';
+import { AutoUnsub } from '../../../core/decorators/auto-unsub.decorator';
 
 @Component({
   selector: 'todo-item',
   standalone: true,
-  templateUrl: './todoItem.component.html',
-  styleUrl: './todoItem.component.scss',
+  templateUrl: './todo-item.component.html',
+  styleUrl: './todo-item.component.scss',
   imports: [CommonModule, RouterLink],
 })
+@AutoUnsub()
 export class TodoItemComponent implements OnInit {
   taskItem: Observable<ITask | null> = of(null);
 
-  constructor(
-    private route: ActivatedRoute,
-    private taskApi: TaskApiService,
-    private service: TaskService
-  ) {}
+  constructor(private route: ActivatedRoute, private service: TaskService) {}
 
   deleteTask(id: number) {
     this.service.deleteTask(id).subscribe({
-      next: (value) => {
+      next: () => {
         this.taskItem = of(null);
       },
     });
@@ -35,7 +33,7 @@ export class TodoItemComponent implements OnInit {
     this.taskItem = this.route.paramMap.pipe(
       switchMap((params) => {
         const taskId = Number(params.get('id'));
-        return this.taskApi.getTask(`http://localhost:3001/api/todo`, taskId);
+        return this.service.getTask(taskId);
       })
     );
   }
