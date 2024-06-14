@@ -14,7 +14,7 @@ export interface ITask {
   title: string;
   description: string;
   type: TaskTypes;
-  createdOn: string | null;
+  date: string | null;
   status: TaskStatus;
 }
 

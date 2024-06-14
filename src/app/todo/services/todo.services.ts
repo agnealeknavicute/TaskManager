@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { ITask } from '../types/todo.interface';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { ITask } from '../models/todo.interface';
+import { TaskApiService } from './task-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,20 +12,19 @@ export class TaskService {
     this.tasks
   );
 
-  constructor() {}
+  constructor(private taskApi: TaskApiService) {}
 
   getTasks(): Observable<ITask[]> {
-    console.log(this.tasks);
-    return this.tasksSubject.asObservable();
+    return this.taskApi.getTasksApi();
   }
 
-  addTask(task: ITask): void {
-    this.tasks.push(task);
-    this.tasksSubject.next(this.tasks);
+  addTask(task: ITask): Observable<ITask> {
+    return this.taskApi.postTaskApi(task);
   }
-  deleteTask(id: number): void {
-    const updatedTasks = this.tasks.filter((task) => task.id !== id);
-    this.tasks = updatedTasks;
-    this.tasksSubject.next(this.tasks);
+  deleteTask(id: number): Observable<ITask[]> {
+    return this.taskApi.deleteTaskApi(id);
+  }
+  getTask(id: number): Observable<ITask | null> {
+    return this.taskApi.getTaskApi(id);
   }
 }
