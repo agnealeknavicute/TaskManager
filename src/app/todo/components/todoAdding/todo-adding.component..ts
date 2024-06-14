@@ -8,8 +8,7 @@ import { CommonModule } from '@angular/common';
 import { TaskService } from '../../services/todo.services';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormGroup, FormControl } from '@angular/forms';
-import { TaskApiService } from '../../services/task-api.service';
-import { HttpClient } from '@angular/common/http';
+import { AutoUnsub } from '../../../core/decorators/auto-unsub.decorator';
 
 @Component({
   selector: 'todo-add',
@@ -25,6 +24,7 @@ import { HttpClient } from '@angular/common/http';
     ReactiveFormsModule,
   ],
 })
+@AutoUnsub()
 export class TodoAddingComponent implements Partial<ITask> {
   taskForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3)]),

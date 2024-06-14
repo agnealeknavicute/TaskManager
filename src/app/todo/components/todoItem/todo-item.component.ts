@@ -1,11 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { TaskService } from '../../services/todo.services';
 import { ITask } from '../../models/todo.interface';
 import { switchMap } from 'rxjs/operators';
-import { TaskApiService } from '../../services/task-api.service';
 import { AutoUnsub } from '../../../core/decorators/auto-unsub.decorator';
 
 @Component({
@@ -17,20 +16,20 @@ import { AutoUnsub } from '../../../core/decorators/auto-unsub.decorator';
 })
 @AutoUnsub()
 export class TodoItemComponent implements OnInit {
-  taskItem: Observable<ITask | null> = of(null);
+  taskItem$: Observable<ITask | null> = of(null);
 
   constructor(private route: ActivatedRoute, private service: TaskService) {}
 
   deleteTask(id: number) {
     this.service.deleteTask(id).subscribe({
       next: () => {
-        this.taskItem = of(null);
+        this.taskItem$ = of(null);
       },
     });
   }
 
   ngOnInit(): void {
-    this.taskItem = this.route.paramMap.pipe(
+    this.taskItem$ = this.route.paramMap.pipe(
       switchMap((params) => {
         const taskId = Number(params.get('id'));
         return this.service.getTask(taskId);

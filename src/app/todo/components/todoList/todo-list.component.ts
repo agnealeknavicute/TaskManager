@@ -1,10 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 import { ITask } from '../../models/todo.interface';
 import { TaskService } from '../../services/todo.services';
 import { RouterLink } from '@angular/router';
-import { TaskApiService } from '../../services/task-api.service';
-import { error } from 'console';
 import { AutoUnsub } from '../../../core/decorators/auto-unsub.decorator';
 
 @Component({
