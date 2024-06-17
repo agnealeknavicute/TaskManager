@@ -21,7 +21,11 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { TodoEditItemComponent } from '../todo-edit-item/todo-edit-item.component';
+import { TodoEditItemComponent } from '../todoEditItem/todo-edit-item.component';
+import {
+  rawTypeToRealType,
+  realTypeToRawType,
+} from '../../../helpers/rawType-helper';
 
 export interface IEditData {
   title: string;
@@ -47,16 +51,6 @@ export interface IEditData {
 @AutoUnsub()
 export class TodoItemComponent implements OnInit {
   taskItem$: Observable<ITask | null> = of(null);
-  editMode: boolean = false;
-  editForm = new FormGroup({
-    title: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    description: new FormControl('', [
-      Validators.required,
-      Validators.minLength(7),
-    ]),
-    rawType: new FormControl(2),
-  });
-  result: any = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -69,63 +63,42 @@ export class TodoItemComponent implements OnInit {
       switchMap((params) => {
         const taskId = Number(params.get('id'));
         return this.service.getTask(taskId);
-      }),
-      tap((task) => {
-        if (task) {
-          this.editForm.patchValue({
-            title: task.title,
-            description: task.description,
-            rawType: 2,
-          });
-        }
       })
     );
   }
   openDialog() {
     this.taskItem$.subscribe((task) => {
-      const dialogRef = this.dialog.open(TodoEditItemComponent, {
-        width: '30%',
-        data: this.editForm.value,
-      });
+      if (task) {
+        const rawType = realTypeToRawType(task.type);
+        const dialogRef = this.dialog.open(TodoEditItemComponent, {
+          width: '30%',
+          data: {
+            title: task.title,
+            description: task.description,
+            rawType: rawType,
+          },
+        });
 
-      dialogRef.afterClosed().subscribe((result) => {
-        console.log('The dialog was closed');
-        if (result) {
-          let type: TaskTypes = TaskTypes.MediumUrgency;
-          switch (result.rawType) {
-            case 1:
-              type = TaskTypes.LowUrgency;
-              break;
-            case 2:
-              type = TaskTypes.MediumUrgency;
-              break;
-            case 3:
-              type = TaskTypes.HighUrgency;
-              break;
+        dialogRef.afterClosed().subscribe((result) => {
+          console.log('The dialog was closed');
+          if (result) {
+            let type: TaskTypes = rawTypeToRealType(result.rawType);
+
+            const taskId = Number(this.route.snapshot.paramMap.get('id'));
+
+            this.service
+              .updateTask(taskId, {
+                title: result.title,
+                description: result.description,
+                type: type,
+              })
+              .subscribe(() => {
+                this.loadTask();
+              });
           }
-          const taskId = Number(this.route.snapshot.paramMap.get('id'));
-
-          this.service
-            .updateTask(taskId, {
-              title: result.title,
-              description: result.description,
-              type: type,
-            })
-            .subscribe(() => {
-              this.loadTask();
-            });
-        }
-      });
+        });
+      }
     });
-  }
-
-  isInvalid(controlName: string) {
-    const control = this.editForm.get(controlName);
-    return control && control.invalid && (control.dirty || control.touched);
-  }
-
-  setEditMode() {
-    this.editMode = !this.editMode;
   }
 
   deleteTask(id: number) {
@@ -143,26 +116,5 @@ export class TodoItemComponent implements OnInit {
         return this.service.getTask(taskId);
       })
     );
-    this.taskItem$.subscribe((task) => {
-      if (task) {
-        let rawType = 1;
-        switch (task.type) {
-          case TaskTypes.HighUrgency:
-            rawType = 3;
-            break;
-          case TaskTypes.MediumUrgency:
-            rawType = 2;
-            break;
-          case TaskTypes.LowUrgency:
-            rawType = 1;
-            break;
-        }
-        this.editForm.patchValue({
-          title: task.title,
-          description: task.description,
-          rawType: rawType,
-        });
-      }
-    });
   }
 }
