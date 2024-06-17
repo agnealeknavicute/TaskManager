@@ -27,4 +27,10 @@ export class TaskService {
   getTask(id: number): Observable<ITask | null> {
     return this.taskApi.getTaskApi(id);
   }
+  updateTask(
+    id: number,
+    data: Pick<ITask, 'title' | 'description' | 'type'>
+  ): Observable<ITask> {
+    return this, this.taskApi.updateTaskApi(id, data);
+  }
 }

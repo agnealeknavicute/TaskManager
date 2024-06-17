@@ -1,17 +1,24 @@
 <div class="flex justify-center">
     <div 
     class="w-1/3 mt-4"
-    *ngIf="taskItem$ | async as taskItem$">
-    <p class="text-lg font-semibold">{{taskItem$.title}}</p>
-    <p>{{taskItem$.description}}</p>
+    *ngIf="(taskItem$ | async) as taskItem$">
+            <p class="text-lg font-semibold">{{taskItem$.title}}</p>
+            <p>{{taskItem$.description}}</p>
+
+
+        
     <div class="flex text-xs justify-between pt-4">
         <span>{{taskItem$.type}}</span>
         <span>{{taskItem$.date}}</span>
 </div>
-<div class="text-right">
+<div class=" flex justify-between mt-5">
+    <button (click)="openDialog()" class="deleteBtn hover:bg-orange-500 mt-3 text-xs">
+        edit
+</button>
     <button (click)="deleteTask(taskItem$.id)" class="deleteBtn hover:bg-orange-500 mt-3 text-xs">
             delete
     </button>
+    
 </div>
 </div>
     <div class="w-1/3 mt-5 border border-orange-500 p-5 rounded-lg"

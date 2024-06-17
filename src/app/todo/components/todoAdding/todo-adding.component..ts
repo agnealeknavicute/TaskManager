@@ -11,7 +11,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { AutoUnsub } from '../../../core/decorators/auto-unsub.decorator';
 
 @Component({
-  selector: 'todo-add',
+  selector: 'app-todo-add',
   standalone: true,
   templateUrl: './todo-adding.component.html',
   styleUrl: './todo-adding.component.scss',

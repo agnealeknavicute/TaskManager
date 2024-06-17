@@ -37,6 +37,15 @@ export class TaskApiService {
       environment.apiUrl + constants.DELETE_NOTE + `/${id}`
     );
   }
+  updateTaskApi(
+    id: number,
+    data: Pick<ITask, 'title' | 'description' | 'type'>
+  ): Observable<ITask> {
+    return this.http.post<ITask>(
+      environment.apiUrl + constants.UPDATE_NOTE + `/${id}`,
+      data
+    );
+  }
 
   private handleError(error: any): Observable<never> {
     console.error('An error occurred', error);

@@ -5,6 +5,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TodoListComponent } from './todo/components/todoList/todo-list.component';
 import { TodoAddingComponent } from './todo/components/todoAdding/todo-adding.component.';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -17,13 +18,12 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     TodoAddingComponent,
     RouterLink,
     RouterLinkActive,
+    ReactiveFormsModule,
+    FormsModule,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   title = 'task-manager';
-  handleToggle() {
-    console.log('Toggle triggered');
-  }
 }
