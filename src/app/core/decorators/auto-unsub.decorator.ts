@@ -5,7 +5,6 @@ export function AutoUnsub() {
       for (let prop in this) {
         const property = this[prop];
         if (property && typeof property.unsubscribea === 'function') {
-          debugger;
           property?.unsubscribe();
         }
       }
