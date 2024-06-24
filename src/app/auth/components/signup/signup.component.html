@@ -2,25 +2,37 @@
 
     <form [formGroup]="signupForm" (ngSubmit)="submitForm()">
         <div>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="fill">
                 <mat-label>Username</mat-label>
                 <input matInput  formControlName="username">
                 <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                @if (signupForm.controls.username.invalid && (signupForm.controls.username.dirty || signupForm.controls.username.touched)) {
+                  <mat-error class="text-xs">Please enter a valid username</mat-error>
+
+                }
               </mat-form-field>
         </div>
         
         <div>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="fill">
                 <mat-label>Email</mat-label>
                 <input matInput formControlName="email">
                 <mat-icon matSuffix>email</mat-icon>
+                @if (signupForm.controls.email.invalid && (signupForm.controls.email.dirty || signupForm.controls.email.touched)) {
+                  <mat-error class="text-xs">Please enter a valid email address</mat-error>
+
+                }
               </mat-form-field>
         </div>
         <div>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="fill">
                 <mat-label>Password</mat-label>
                 <input matInput  formControlName="password" type="password">
                 <mat-icon matSuffix>lock</mat-icon>
+                @if (signupForm.controls.password.invalid && (signupForm.controls.password.dirty || signupForm.controls.password.touched)) {
+                  <mat-error class="text-xs">Please enter a valid password</mat-error>
+
+                }
               </mat-form-field>
               
         </div>

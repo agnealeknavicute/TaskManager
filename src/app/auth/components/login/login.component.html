@@ -1,16 +1,23 @@
 <div class="mx-auto pt-10">
 
     <form [formGroup]="loginForm" (ngSubmit)="submitForm()">
+        <p *ngIf="invalidUser" class="text-sm mb-2 text-red-500">Invalid email or password</p>
+        <p *ngIf="!invalidUser" class="text-sm mb-2  text-white">Invalid email or password</p>
+
         <div>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="fill">
                 <mat-label>Email</mat-label>
                 <input matInput  formControlName="email">
                 <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                @if (loginForm.controls.email.invalid && (loginForm.controls.email.dirty || loginForm.controls.email.touched)) {
+                  <mat-error class="text-xs">Please enter a valid email address</mat-error>
+
+                }
               </mat-form-field>
         </div>
     
         <div>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="fill">
                 <mat-label>Password</mat-label>
                 <input matInput  formControlName="password" type="password">
                 <mat-icon matSuffix>lock</mat-icon>
@@ -24,8 +31,5 @@
       </button>
     </form>
   
-    <mat-form-field class="example-full-width">
-        <mat-label>Favorite food</mat-label>
-        <input matInput placeholder="Ex. Pizza" value="Sushi">
-      </mat-form-field>
+
   </div>

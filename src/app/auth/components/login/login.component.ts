@@ -1,7 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AutoUnsub } from '../../../core/decorators/auto-unsub.decorator';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -23,15 +33,25 @@ import { MatButtonModule } from '@angular/material/button';
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 @AutoUnsub()
 export class LoginComponent implements OnInit {
   loginForm = new FormGroup({
-    email: new FormControl(''),
-    password: new FormControl(''),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(7),
+    ]),
   });
 
-  constructor(private authService: AuthService, private router: Router) {}
+  invalidUser = false;
+
+  constructor(
+    private authService: AuthService,
+    private cdr: ChangeDetectorRef,
+    private router: Router
+  ) {}
 
   redirectToSignup() {
     this.router.navigate(['app-signup']);
@@ -50,7 +70,10 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['app-todo-list-component']);
         },
         error: (err) => {
-          console.log(err);
+          if (err.status == 404 && err.status == 400) {
+            this.invalidUser = true;
+            this.cdr.detectChanges();
+          }
         },
       });
     }

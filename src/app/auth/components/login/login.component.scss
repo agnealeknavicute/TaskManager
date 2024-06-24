@@ -4,7 +4,8 @@
 
 .mat-submit {
     --tw-bg-opacity: 1;
-    background-color: rgb(249 115 22 / var(--tw-bg-opacity));
+    color: white!important;
+    background-color: var(--mdc-filled-text-field-focus-active-indicator-color)
 }
 .mat-signup {
     color: white!important;
@@ -16,3 +17,5 @@
     flex-direction: column;
     align-items: flex-start;
   }
+
+

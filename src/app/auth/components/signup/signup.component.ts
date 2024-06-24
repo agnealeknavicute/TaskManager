@@ -1,7 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AutoUnsub } from '../../../core/decorators/auto-unsub.decorator';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { IUser } from '../../models/user.interface';
 import { AuthService } from '../../services/auth.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -30,9 +35,15 @@ import { MatButtonModule } from '@angular/material/button';
 @AutoUnsub()
 export class SignupComponent implements OnInit {
   signupForm = new FormGroup({
-    username: new FormControl(''),
-    email: new FormControl(''),
-    password: new FormControl(''),
+    username: new FormControl('', [
+      Validators.required,
+      Validators.minLength(7),
+    ]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(7),
+    ]),
   });
   isSuccessful = false;
 
@@ -55,7 +66,6 @@ export class SignupComponent implements OnInit {
         username: this.signupForm.value.username,
         id: id,
       };
-      debugger;
       this.authService.signup(user).subscribe({
         next: (res) => {
           if (res === 'Signup successful') {
