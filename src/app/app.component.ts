@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TodoListComponent } from './todo/components/todoList/todo-list.component';
 import { TodoAddingComponent } from './todo/components/todoAdding/todo-adding.component.';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from './auth/services/auth.service';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
@@ -20,10 +22,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     RouterLinkActive,
     ReactiveFormsModule,
     FormsModule,
+    NavbarComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'task-manager';
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit() {
+    // return this.authService.isAuthenticated();
+  }
 }

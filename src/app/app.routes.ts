@@ -8,6 +8,11 @@ import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'app-login',
+    pathMatch: 'full',
+  },
+  {
     path: 'app-todo-add-component',
     component: TodoAddingComponent,
     canActivate: [AuthGuard],

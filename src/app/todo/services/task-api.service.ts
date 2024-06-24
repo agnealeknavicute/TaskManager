@@ -10,8 +10,10 @@ import { constants } from '../../core/constants/app-constants';
 })
 export class TaskApiService {
   constructor(private http: HttpClient) {}
-  getTasksApi(): Observable<ITask[]> {
-    return this.http.get<ITask[]>(environment.apiUrl + constants.GET_NOTES_URL);
+  getTasksApi(id: string): Observable<ITask[]> {
+    return this.http.get<ITask[]>(
+      environment.apiUrl + constants.GET_NOTES_URL + `/${id}`
+    );
   }
   getTaskApi(id: number): Observable<ITask> {
     return this.http

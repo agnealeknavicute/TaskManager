@@ -14,8 +14,8 @@ export class TaskService {
 
   constructor(private taskApi: TaskApiService) {}
 
-  getTasks(): Observable<ITask[]> {
-    return this.taskApi.getTasksApi();
+  getTasks(id: string): Observable<ITask[]> {
+    return this.taskApi.getTasksApi(id);
   }
 
   addTask(task: ITask): Observable<ITask> {

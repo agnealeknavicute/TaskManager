@@ -1,13 +1,35 @@
-<div>
+    <div class="flex justify-center pt-10">
+
     <form [formGroup]="signupForm" (ngSubmit)="submitForm()">
-        <label for="username">Username</label>
-        <input type="text" formControlName="username">
-        <label for="email">Email</label>
-        <input type="text" formControlName="email">
-        <label for="password">Password</label>
-        <input type="text" formControlName="password">
-        <button type="submit" >
-            Submit
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Username</mat-label>
+                <input matInput  formControlName="username">
+                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+              </mat-form-field>
+        </div>
+        
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email">
+                <mat-icon matSuffix>email</mat-icon>
+              </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput  formControlName="password" type="password">
+                <mat-icon matSuffix>lock</mat-icon>
+              </mat-form-field>
+              
+        </div>
+        <button (click)="redirectToLogin()" color="signup" mat-stroked-button >
+            Login
         </button>
+      <button mat-stroked-button color="submit" class="float-right" type="submit">
+        Submit
+      </button>
     </form>
-</div>
+
+  </div>

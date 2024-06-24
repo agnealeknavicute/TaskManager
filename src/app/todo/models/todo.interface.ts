@@ -10,6 +10,7 @@ export enum TaskStatus {
 }
 
 export interface ITask {
+  userId: string;
   id: number;
   title: string;
   description: string;

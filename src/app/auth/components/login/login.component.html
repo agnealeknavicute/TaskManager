@@ -1,6 +1,31 @@
-<div>
-    <form [formGroup]="loginForm">
-        <label for="username"></label>
+<div class="mx-auto pt-10">
+
+    <form [formGroup]="loginForm" (ngSubmit)="submitForm()">
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput  formControlName="email">
+                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+              </mat-form-field>
+        </div>
     
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput  formControlName="password" type="password">
+                <mat-icon matSuffix>lock</mat-icon>
+              </mat-form-field>
+        </div>
+        <button (click)="redirectToSignup()" color="signup" mat-stroked-button >
+            Signup
+        </button>
+      <button mat-stroked-button color="submit" class="float-right" type="submit">
+        Submit
+      </button>
     </form>
-</div>
+  
+    <mat-form-field class="example-full-width">
+        <mat-label>Favorite food</mat-label>
+        <input matInput placeholder="Ex. Pizza" value="Sushi">
+      </mat-form-field>
+  </div>

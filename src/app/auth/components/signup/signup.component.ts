@@ -1,14 +1,29 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { AutoUnsub } from '../../../core/decorators/auto-unsub.decorator';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { IUser } from '../../models/user.interface';
 import { AuthService } from '../../services/auth.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    RouterLink,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss'],
 })
@@ -19,8 +34,13 @@ export class SignupComponent implements OnInit {
     email: new FormControl(''),
     password: new FormControl(''),
   });
+  isSuccessful = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
+
+  redirectToLogin() {
+    this.router.navigate(['app-login']);
+  }
 
   submitForm() {
     if (
@@ -35,7 +55,18 @@ export class SignupComponent implements OnInit {
         username: this.signupForm.value.username,
         id: id,
       };
-      this.authService.signup(user).subscribe((res) => {});
+      debugger;
+      this.authService.signup(user).subscribe({
+        next: (res) => {
+          if (res === 'Signup successful') {
+            this.isSuccessful = true;
+            this.router.navigate(['/app-login']);
+          }
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
     }
   }
 
