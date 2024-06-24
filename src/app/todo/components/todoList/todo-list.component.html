@@ -1,15 +1,15 @@
-<div class="md:w-2/6 w-4/5 mx-auto py-12 bg-stone-200 px-6 rounded-lg mt-10">
+<div class="md:w-2/6 w-4/5 mx-auto py-12  px-6 rounded-lg mt-10">
 
         @if (tasks.length < 1) {
                 <div class="bg-white py-2 px-4 rounded-lg">
                         You don't have any tasks so far... let's fix it!
                 </div>
         } @else {
-                <ul >
+                <ul class="">
                         
                         @for (task of tasks.reverse(); track task) {
                                 
-                                <li class="bg-white hover:cursor-pointer hover:border hover:boder hover:border-orange-500 py-2 px-4 rounded-lg mb-5">
+                                <li class="bg-white border rounded-lg mb-2 shadow-sm shadow-indigo-500 border-purple-700 hover:cursor-pointer  hover:border-black hover:shadow-xl py-4 px-4 ">
                                         <a [routerLink]="['/app-todo-item-component/', task.id]">
 
                                         <div class="flex justify-between items-center pb-2">
@@ -27,7 +27,7 @@
                                         </div>
                                 
                                         <div class="text-right">
-                                                <button (click)="deleteTask(task.id)" class="deleteBtn hover:bg-orange-500 mt-3 text-xs">
+                                                <button (click)="deleteTask(task.id)" class="deleteBtn hover:bg-purple-800 mt-3 text-xs">
                                                         delete
                                                 </button>
                                         </div>

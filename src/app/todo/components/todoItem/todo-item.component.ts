@@ -26,6 +26,9 @@ import {
   rawTypeToRealType,
   realTypeToRawType,
 } from '../../../helpers/rawType-helper';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 
 export interface IEditData {
   title: string;
@@ -46,6 +49,9 @@ export interface IEditData {
     MatSelectModule,
     MatSliderModule,
     ReactiveFormsModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatIconModule,
   ],
 })
 @AutoUnsub()

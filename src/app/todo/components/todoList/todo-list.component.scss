@@ -4,7 +4,8 @@
 
 .deleteBtn {
     padding: 2px 5px;
+    color: white;
             border-radius: 5px;
-            background-color: rgb(251, 133, 0);;
-            border-color: rgb(251, 133, 0);;
+            background-color: var(--mdc-filled-text-field-focus-active-indicator-color);
+            border-color: var(--mdc-filled-text-field-focus-active-indicator-color)
 }

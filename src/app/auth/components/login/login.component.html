@@ -21,6 +21,10 @@
                 <mat-label>Password</mat-label>
                 <input matInput  formControlName="password" type="password">
                 <mat-icon matSuffix>lock</mat-icon>
+                @if (loginForm.controls.password.invalid && (loginForm.controls.password.dirty || loginForm.controls.password.touched)) {
+                  <mat-error class="text-xs">Please enter a valid password</mat-error>
+
+                }
               </mat-form-field>
         </div>
         <button (click)="redirectToSignup()" color="signup" mat-stroked-button >

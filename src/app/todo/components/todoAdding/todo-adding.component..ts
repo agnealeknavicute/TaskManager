@@ -9,6 +9,9 @@ import { TaskService } from '../../services/todo.services';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormGroup, FormControl } from '@angular/forms';
 import { AutoUnsub } from '../../../core/decorators/auto-unsub.decorator';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-todo-add',
@@ -22,6 +25,8 @@ import { AutoUnsub } from '../../../core/decorators/auto-unsub.decorator';
     MatSelectModule,
     MatSliderModule,
     ReactiveFormsModule,
+    MatIconModule,
+    MatButtonModule,
   ],
 })
 @AutoUnsub()
@@ -41,12 +46,22 @@ export class TodoAddingComponent implements Partial<ITask> {
   status = TaskStatus.NotStarted;
   TaskTypes = TaskTypes;
 
-  constructor(private taskService: TaskService) {}
+  constructor(private router: Router, private taskService: TaskService) {}
 
-  isInvalid(controlName: string) {
-    const control = this.taskForm.get(controlName);
-    return control && control.invalid && (control.dirty || control.touched);
+  resetForm() {
+    this.taskForm.reset({
+      title: '',
+      description: '',
+      rawType: 2,
+    });
+
+    Object.keys(this.taskForm.controls).forEach((key) => {
+      const control = this.taskForm.get(key);
+      control?.markAsPristine();
+      control?.markAsUntouched();
+    });
   }
+
   submitTask() {
     const date = new Date();
     const day = date.getDate();
@@ -86,11 +101,13 @@ export class TodoAddingComponent implements Partial<ITask> {
         date: formattedDate,
         status: this.status,
       };
-      this.taskService.addTask(task).subscribe();
-      this.taskForm.reset();
-      this.id = 0;
-      this.type = TaskTypes.MediumUrgency;
-      this.status = TaskStatus.NotStarted;
+      this.taskService.addTask(task).subscribe(() => {
+        this.resetForm();
+        this.id = 0;
+        this.type = TaskTypes.MediumUrgency;
+        this.status = TaskStatus.NotStarted;
+        this.router.navigate(['app-todo-list-component']);
+      });
     }
   }
 }

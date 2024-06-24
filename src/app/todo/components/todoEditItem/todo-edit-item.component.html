@@ -8,15 +8,18 @@ mat-dialog-title> Task Edit</h1>
     <div mat-dialog-content class=" ">
         
         <div>
-            <mat-form-field class="">
-                <input matInput placeholder="New title" [(ngModel)]="data.title">
-              </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input matInput [(ngModel)]="data.title" />
+            
+          </mat-form-field>
         </div>
         <div>
-            <mat-form-field class="w-full ">
-                <input matInput placeholder="New description" [(ngModel)]="data.description">
-              </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <textarea matInput [(ngModel)]="data.description" ></textarea>
+            
+          </mat-form-field>
         </div>
+
         <p class="pb-2">Urgency:</p>
         <div class="flex justify-between w-28 ml-2 text-xs">
           <p>Low</p>
@@ -32,7 +35,7 @@ mat-dialog-title> Task Edit</h1>
     </div>
     <div mat-dialog-actions>
       <button mat-raised-button class="mr-2" (click)="onNoClick()">Undo</button>
-      <button mat-raised-button color="accent" 
+      <button mat-raised-button color="colorBtn" 
       [mat-dialog-close]="data"
       cdkFocusInitial>Ok</button>
     </div>
