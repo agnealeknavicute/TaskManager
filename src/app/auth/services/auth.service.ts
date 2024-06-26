@@ -10,7 +10,7 @@ import { DOCUMENT } from '@angular/common';
   providedIn: 'root',
 })
 export class AuthService {
-  storageSub: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+  storageSubj: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     this.getIsUser()
   );
 
@@ -21,7 +21,7 @@ export class AuthService {
 
   setIsUser(value: boolean): void {
     localStorage.setItem('isUser', value.toString());
-    this.storageSub.next(value);
+    this.storageSubj.next(value);
   }
 
   getIsUser(): boolean {
@@ -37,7 +37,7 @@ export class AuthService {
   logOut(): void {
     localStorage.removeItem('isUser');
     localStorage.removeItem('user');
-    this.storageSub.next(false);
+    this.storageSubj.next(false);
   }
 
   getUserData(): IUser | null {
@@ -54,7 +54,7 @@ export class AuthService {
   }
 
   getIsUserObservable(): Observable<boolean> {
-    return this.storageSub.asObservable();
+    return this.storageSubj.asObservable();
   }
 
   login(
@@ -65,7 +65,7 @@ export class AuthService {
       data
     );
   }
-  signup(data: Omit<IUser, ''>): Observable<string> {
+  signup(data: IUser): Observable<string> {
     return this.http.post<string>(environment.apiUrl + constants.SIGNUP, data);
   }
 }

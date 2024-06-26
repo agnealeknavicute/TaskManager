@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AutoUnsub } from '../../../core/decorators/auto-unsub.decorator';
 import {
@@ -33,7 +33,7 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrls: ['./signup.component.scss'],
 })
 @AutoUnsub()
-export class SignupComponent implements OnInit {
+export class SignupComponent {
   signupForm = new FormGroup({
     username: new FormControl('', [
       Validators.required,
@@ -80,5 +80,4 @@ export class SignupComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
 }

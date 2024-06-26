@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TodoListComponent } from './todo/components/todoList/todo-list.component';
 import { TodoAddingComponent } from './todo/components/todoAdding/todo-adding.component.';
@@ -27,12 +27,8 @@ import { NavbarComponent } from './navbar/navbar.component';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'task-manager';
 
   constructor(private authService: AuthService) {}
-
-  ngOnInit() {
-    // return this.authService.isAuthenticated();
-  }
 }

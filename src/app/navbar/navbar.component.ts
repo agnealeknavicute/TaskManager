@@ -17,10 +17,8 @@ import { IUser } from '../auth/models/user.interface';
   imports: [
     CommonModule,
     RouterOutlet,
-
     RouterLink,
     RouterLinkActive,
-
     NavbarComponent,
   ],
   templateUrl: './navbar.component.html',
@@ -29,7 +27,6 @@ import { IUser } from '../auth/models/user.interface';
 @AutoUnsub()
 export class NavbarComponent implements OnInit {
   isUser: boolean = true;
-  private authSubscription: Subscription | undefined;
   userData: IUser | null = null;
 
   constructor(private authService: AuthService, private router: Router) {}
@@ -40,11 +37,9 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authSubscription = this.authService
-      .getIsUserObservable()
-      .subscribe((isUser) => {
-        this.isUser = isUser;
-        this.userData = this.authService.getUserData();
-      });
+    this.authService.getIsUserObservable().subscribe((isUser) => {
+      this.isUser = isUser;
+      this.userData = this.authService.getUserData();
+    });
   }
 }

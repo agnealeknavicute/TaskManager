@@ -85,12 +85,9 @@ export class TodoAddingComponent implements Partial<ITask> {
         this.type = this.TaskTypes.HighUrgency;
         break;
     }
-    if (
-      this.taskForm.value.title &&
-      this.taskForm.value.description &&
-      localStorage.getItem('user')
-    ) {
-      const userId = JSON.parse(localStorage.getItem('user')!)._id;
+    const user = localStorage.getItem('user');
+    if (this.taskForm.value.title && this.taskForm.value.description && user) {
+      const userId = JSON.parse(user)._id;
 
       const task: ITask = {
         userId: userId,
