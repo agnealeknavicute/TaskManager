@@ -1,7 +1,7 @@
 export enum TaskTypes {
   HighUrgency = 'High Urgency',
   MediumUrgency = 'Medium Urgency',
-  LowUrgency = 'Low urgency',
+  LowUrgency = 'Low Urgency',
 }
 export enum TaskStatus {
   Done = 'done',

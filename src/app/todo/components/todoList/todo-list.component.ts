@@ -5,7 +5,7 @@ import { RouterLink } from '@angular/router';
 import { AutoUnsub } from '../../../core/decorators/auto-unsub.decorator';
 
 @Component({
-  selector: 'app-todolist',
+  selector: 'app-todo-list',
   standalone: true,
   imports: [RouterLink],
   templateUrl: './todo-list.component.html',

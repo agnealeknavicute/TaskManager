@@ -1,0 +1,39 @@
+<h1 
+class="pt-4 px-4 text-lg"
+mat-dialog-title> Task Edit</h1>
+
+<div class="m-4">
+
+
+    <div mat-dialog-content class=" ">
+        
+        <div>
+            <mat-form-field class="">
+                <input matInput placeholder="New title" [(ngModel)]="data.title">
+              </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field class="w-full ">
+                <input matInput placeholder="New description" [(ngModel)]="data.description">
+              </mat-form-field>
+        </div>
+        <p class="pb-2">Urgency:</p>
+        <div class="flex justify-between w-28 ml-2 text-xs">
+          <p>Low</p>
+          <p>Medium</p>
+          <p>High</p>
+
+        </div>
+        <div>
+
+          <mat-slider min="1" max="3" step="1">
+              <input matInput  matSliderThumb [(ngModel)]="data.rawType" >
+            </mat-slider>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-raised-button class="mr-2" (click)="onNoClick()">Undo</button>
+      <button mat-raised-button color="accent" 
+      [mat-dialog-close]="data"
+      cdkFocusInitial>Ok</button>
+    </div>
+</div>
