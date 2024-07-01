@@ -1,0 +1,29 @@
+<nav class="bg-black text-white">
+    <ul class="flex justify-between py-3 px-10">
+      @if (isUser && userData) {
+        <div (click)="logOut()" class="mr-5 hover:cursor-pointer px-2 
+         rounded-sm hover:bg-purple-700">
+            Logout
+        </div>
+
+        <div class="flex">
+
+            <li ><a class="mr-5 hover:cursor-pointer px-2 
+                py-2 rounded-sm hover:bg-purple-700" [routerLink]="['/app-todo-add-component']" ariaCurrentWhenActive="page" >Add task</a></li>
+              <li ><a class="mr-5 hover:cursor-pointer 
+                px-2 py-2 rounded-sm hover:bg-purple-700" 
+                [routerLink]="['/app-todo-list-component']"
+                 routerLinkActive="active" ariaCurrentWhenActive="page" >
+                 Tasks list</a></li>
+                 <li class="text-purple-500 ml-3" >{{userData.username}}</li>
+
+        </div>
+        
+          } @else {
+            <div>
+                Welcome page!
+            </div>
+          }
+      
+    </ul>
+  </nav>

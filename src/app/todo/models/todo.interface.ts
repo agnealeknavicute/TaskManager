@@ -1,7 +1,7 @@
 export enum TaskTypes {
   HighUrgency = 'High Urgency',
   MediumUrgency = 'Medium Urgency',
-  LowUrgency = 'Low urgency',
+  LowUrgency = 'Low Urgency',
 }
 export enum TaskStatus {
   Done = 'done',
@@ -10,6 +10,7 @@ export enum TaskStatus {
 }
 
 export interface ITask {
+  userId: string;
   id: number;
   title: string;
   description: string;

@@ -4,8 +4,8 @@ export function AutoUnsub() {
     constructor.prototype.ngOnDestroy = function () {
       for (let prop in this) {
         const property = this[prop];
-        if (typeof property.subscribe === 'function') {
-          property.unsubscribe();
+        if (property && typeof property.unsubscribe === 'function') {
+          property?.unsubscribe();
         }
       }
       orig?.apply();

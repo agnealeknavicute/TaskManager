@@ -1,41 +1,25 @@
-<div class="md:w-2/6 w-4/5 mx-auto py-12 bg-stone-200 px-6 rounded-lg mt-10">
+<div class="md:w-2/6 w-4/5 mx-auto py-12 border border-black px-6 rounded-lg mt-10">
     <div class="form">
         <h2 class="text-lg mb-5">Add new task</h2>
 
-          <form class="formField" (ngSubmit)="submitTask()" [formGroup]="taskForm">
-            <div class="h-16">
-              <input formControlName="title" placeholder='Title' type="text" class="focus:outline-none focus:border-orange-400 focus:ring-orange-400 focus:ring-1">
-              <div 
-              class="text-orange-400 pt-1"
-              *ngIf="taskForm.controls.title.invalid && (taskForm.controls.title.dirty || taskForm.controls.title.touched)">
-                <div *ngIf="taskForm.controls.title.errors?.['required']">
-                  Task title is required.
-                </div>
-                <div *ngIf="taskForm.controls.title.errors?.['minlength']">
-                  At least 3 charactres.
-                </div>
-              </div>
+          <form (ngSubmit)="submitTask()" [formGroup]="taskForm">
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Title</mat-label>
+              <input matInput formControlName="title">
+              <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+              <mat-error *ngIf="taskForm.controls.title.invalid && (taskForm.controls.title.dirty || taskForm.controls.title.touched)" class="text-xs">
+                Please enter a valid title
+              </mat-error>
+            </mat-form-field>
           
-            </div>
-          <div class="textArea mb-2 ">
-            <textarea  
-            class="focus:outline-none focus:border-orange-400 focus:ring-orange-400 focus:ring-1 min-h-16"
+            <mat-form-field class="example-full-width">
+              <mat-label>Description</mat-label>
+              <textarea matInput formControlName="description"></textarea>
+              <mat-error *ngIf="taskForm.controls.description.errors && (taskForm.controls.description.dirty || taskForm.controls.description.touched)" class="text-xs">
+                Please enter a valid description
+              </mat-error>
+            </mat-form-field>
 
-            [ngClass]="{
-              'mb-7 ': !isInvalid('description'),
-            }"
-            formControlName="description" placeholder='Description' ></textarea>
-            <div
-            class="text-orange-400 pt"
-            *ngIf="taskForm.controls.description.invalid && (taskForm.controls.description.dirty || taskForm.controls.description.touched)">
-              <div *ngIf="taskForm.controls.description.errors?.['required']">
-                Task description is required.
-              </div>
-              <div *ngIf="taskForm.controls.description.errors?.['minlength']">
-                At least 7 charactres.
-              </div>
-            </div>
-          </div>
         <p class="pb-2">Urgency:</p>
         <div class="flex justify-between w-28 ml-2 text-xs">
           <p>Low</p>
@@ -50,7 +34,7 @@
             </mat-slider>
       </div>
       <div class="formSubmit">
-        <button type="submit" [disabled]="!taskForm.valid" class="formSubmitBtn hover:bg-orange-500">
+        <button type="submit" [disabled]="!taskForm.valid" class="formSubmitBtn hover:cursor-pointer hover:bg-black">
             Add
           </button>
       </div>

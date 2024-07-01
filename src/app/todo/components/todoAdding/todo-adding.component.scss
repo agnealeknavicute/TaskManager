@@ -15,6 +15,16 @@
     }
 }
 
+.example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .example-full-width {
+    width: 100%;
+  }
+
 .form {
     display: flex;
     flex-direction: column;
@@ -29,23 +39,10 @@
         &Btn{
             padding: 5px 20px;
             border-radius: 5px;
-            background-color: rgb(251, 133, 0);;
-            border-color: rgb(251, 133, 0);;
+            background-color: var(--mdc-filled-text-field-focus-active-indicator-color);
+            border-color: var(--mdc-filled-text-field-focus-active-indicator-color);
+            color: white;
         }
     }
   }
 
-input  {
-    padding: 5px 20px;
-
-    @include customInput();
-}
-
-textarea {
-    resize: vertical; 
-    padding: 10px 20px;
-    @include customInput();
-}
-.mat-form-field{
-    height: 20px;
-}

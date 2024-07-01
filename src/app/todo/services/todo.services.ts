@@ -14,8 +14,8 @@ export class TaskService {
 
   constructor(private taskApi: TaskApiService) {}
 
-  getTasks(): Observable<ITask[]> {
-    return this.taskApi.getTasksApi();
+  getTasks(id: string): Observable<ITask[]> {
+    return this.taskApi.getTasksApi(id);
   }
 
   addTask(task: ITask): Observable<ITask> {
@@ -26,5 +26,11 @@ export class TaskService {
   }
   getTask(id: number): Observable<ITask | null> {
     return this.taskApi.getTaskApi(id);
+  }
+  updateTask(
+    id: number,
+    data: Pick<ITask, 'title' | 'description' | 'type'>
+  ): Observable<ITask> {
+    return this, this.taskApi.updateTaskApi(id, data);
   }
 }

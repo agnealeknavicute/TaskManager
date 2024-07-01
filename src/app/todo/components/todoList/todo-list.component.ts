@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ITask } from '../../models/todo.interface';
 import { TaskService } from '../../services/todo.services';
 import { RouterLink } from '@angular/router';
 import { AutoUnsub } from '../../../core/decorators/auto-unsub.decorator';
+import { AuthService } from '../../../auth/services/auth.service';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
-  selector: 'app-todolist',
+  selector: 'app-todo-list',
   standalone: true,
   imports: [RouterLink],
   templateUrl: './todo-list.component.html',
@@ -15,7 +17,11 @@ import { AutoUnsub } from '../../../core/decorators/auto-unsub.decorator';
 export class TodoListComponent implements OnInit {
   tasks: ITask[] = [];
 
-  constructor(private taskService: TaskService) {}
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private taskService: TaskService,
+    private authService: AuthService
+  ) {}
   deleteTask(id: number) {
     this.taskService.deleteTask(id).subscribe({
       next: (tasks: ITask[]) => {
@@ -24,10 +30,17 @@ export class TodoListComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    this.taskService.getTasks().subscribe({
-      next: (tasks: ITask[]) => {
-        this.tasks = tasks;
-      },
-    });
+    if (this.authService.getIsUser()) {
+      this.taskService
+        .getTasks(
+          JSON.parse(this.document.defaultView?.localStorage.getItem('user')!)
+            ._id
+        )
+        .subscribe({
+          next: (tasks: ITask[]) => {
+            this.tasks = tasks;
+          },
+        });
+    }
   }
 }

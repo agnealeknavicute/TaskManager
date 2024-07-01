@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.mat-submit {
+    --tw-bg-opacity: 1;
+    color: white;
+    background-color: var(--mdc-filled-text-field-focus-active-indicator-color)
+}
+.mat-signup {
+    color: white!important;
+    background-color: black;
+}
