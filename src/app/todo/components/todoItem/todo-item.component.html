@@ -1,39 +1,104 @@
-<div class="mx-auto w-1/3 mt-8">
-    <div class="mt-4 text-xs text-stone-500" *ngIf="(taskItem$ | async) as task">
-        <span>{{task.date}}</span>
+<div class="mx-5 mt-8">
+    <div class="mt-4 flex justify-start text-xs items-center  " *ngIf="(taskItem$ | async) as task">
+        <span class="border-b mr-4 text-stone-500 border-stone-300">{{task.date}}</span>
+        <span>{{task.type}}</span>
+        <div>
+          @if (userRole === 'admin') {
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+              <mat-icon>more_horiz</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button (click)="openDialog()" mat-menu-item>
+                <mat-icon>edit</mat-icon>
+                <span>Edit</span>
+              </button>
+          
+              <button (click)="deleteTask(task.id)" mat-menu-item>
+                <mat-icon>delete</mat-icon>
+                <span>Delete</span>
+              </button>
+            </mat-menu>
+          }
 
+
+      </div>
     </div>
-    <div class="w-full mt-1 justify-between flex" *ngIf="(taskItem$ | async) as task">
+    <div class="w-full justify-start mt-2 flex" *ngIf="(taskItem$ | async) as task">
         
 
-        <div class="w-full">
-            <p class="text-lg font-semibold">{{task.title}}</p>
+        <div class="w-72">
+            <p class="text-lg font-semibold pb-3">{{task.title}}</p>
+            <p class="font-semibold text-stone-700">Description</p>
             <p>{{task.description}}</p>
-            <div class="flex text-xs w-full justify-between pt-4">
-                <span>{{task.type}}</span>
-            </div>
-        </div>
-        <div>
-            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              <mat-menu #menu="matMenu">
-                <button (click)="openDialog()" mat-menu-item>
-                  <mat-icon>edit</mat-icon>
-                  <span>Edit</span>
-                </button>
             
-                <button (click)="deleteTask(task.id)" mat-menu-item>
-                  <mat-icon>delete</mat-icon>
-                  <span>Delete</span>
-                </button>
-              </mat-menu>
-
+            
         </div>
+        <div class="w-72 mx-5">
+          <mat-expansion-panel
+          *ngIf="(taskItem$ | async) as task"
+          (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+            <mat-expansion-panel-header>
+              <mat-panel-title> Assigned users </mat-panel-title>
+              
+            </mat-expansion-panel-header>
+            @if (task.assigned.length > 0) {
+              <ul class="pb-2" >
 
+                @for (user of task.assigned; track user) {
+                  <li class="mb-1"><div class="flex justify-between items-center rounded-lg px-2
+                    py-1
+                    bg-stone-50">
+                    <p>{{user}}</p>
+                    @if (userRole !== 'user') {
+                      <mat-icon 
+                      (click)="deleteAssignUser(task.id, user)"
+                      class="text-stone-500 hover:cursor-pointer">remove</mat-icon>
+                    }
+                   
+                  </div></li>
+                }
+              </ul>
+              
+              
+
+            } @else {
+              <p class="mb-1">No assigned users</p>
+              
+            }
+            @if (userRole !== 'user') {
+              <div class="border-t border-stone-300 pt-2">
+                <div>
+                  @if (assignUsersMode) {
+                    <mat-icon 
+                    class="float-end hover:cursor-pointer text-stone-500"
+                    (click)="changeAssignUsersMode()">remove</mat-icon>
+    
+                    <app-todo-user-assign
+                    (optionSelected)="handleOptionSelected($event)"
+                    [allUsers]="allUserUsernames"></app-todo-user-assign>
+                    <div class="formSubmit float-right">
+                      <button (click)="addAssignUsers(task.id)"  class="formSubmitBtn hover:cursor-pointer hover:bg-black">
+                          Add
+                        </button>
+                    </div>
+                  } @else {
+                    <mat-icon 
+                    class="float-end hover:cursor-pointer text-stone-500"
+    
+                    (click)="changeAssignUsersMode()">add</mat-icon>
+                  }
+                </div>
+  
+  
+              </div>
+            }
+
+          </mat-expansion-panel>
+        </div>
 
   
 </div>
+
     <div class="w-full text-center mt-5  p-5 "
      *ngIf="!(taskItem$ | async)">
         Task not found

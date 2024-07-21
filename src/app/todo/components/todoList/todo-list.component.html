@@ -1,37 +1,56 @@
-<div class="md:w-2/6 w-4/5 mx-auto py-12  px-6 rounded-lg mt-10">
+<div class="w-full flex justify-center py-12  px-6 rounded-lg mt-10">
 
         @if (tasks.length < 1) {
                 <div class="bg-white py-2 px-4 rounded-lg">
                         You don't have any tasks so far... let's fix it!
                 </div>
         } @else {
-                <ul class="">
+                <ul class="w-72">
                         
                         @for (task of tasks.reverse(); track task) {
-                                
-                                <li class="bg-white border rounded-lg mb-2 shadow-sm shadow-indigo-500 border-purple-700 hover:cursor-pointer  hover:border-black hover:shadow-xl py-4 px-4 ">
-                                        <a [routerLink]="['/app-todo-item-component/', task.id]">
+                                <mat-card class="w-72 
+                                mb-4
+                                transition border-white border
+                                hover:border hover:border-purple-400
+                                ease-in-out  transi">
+                                <a class="hover:cursor-default" [routerLink]="['/app-todo-item-component', task.id]">
 
-                                        <div class="flex justify-between items-center pb-2">
-                                                <p class="text-base ">{{task.title}}</p>
-                                                <p class="text-xs">{{task.status}}</p>
+                                        <li class="pt-3 px-3 " >
+        
+                                                <div class=" pl-2">
+                                                        <div class="flex hover:cursor-pointer">
+                                                                <p class="text-base ">{{task.title}}</p>
+                                              
 
-                                        </div>
+                                                        </div>
+                                                        <div class="flex text-stone-500 justify-between text-xs pb-2">
+                                                                <div class="flex
+                                                                hover:cursor-pointer
+                                                                items-center mt-4 ">
+                                                                        <mat-icon class="text-md">person_outline </mat-icon>
 
-                                        <p>{{task.description}}</p>
+                                                                        <p>{{task.assigned.length}}</p>
+                                                                </div>
+
+                                                                <p class="pb-1">{{task.type}}</p>
+                                                        </div>
+                                                        
+        
+                                                </div>
+                                                
+
+        
+                                                <!-- <div class="flex text-xs justify-between pt-4">
+                                                        <span>{{task.type}}</span>
+                                                        <span>{{task.date}}</span>
+                                                </div> -->
+                                        
+                                                
+                                        </li>
                                 </a>
 
-                                        <div class="flex text-xs justify-between pt-4">
-                                                <span>{{task.type}}</span>
-                                                <span>{{task.date}}</span>
-                                        </div>
+                                </mat-card>
                                 
-                                        <div class="text-right">
-                                                <button (click)="deleteTask(task.id)" class="deleteBtn hover:bg-purple-800 mt-3 text-xs">
-                                                        delete
-                                                </button>
-                                        </div>
-                                </li>
                                 
                         }
                 </ul>

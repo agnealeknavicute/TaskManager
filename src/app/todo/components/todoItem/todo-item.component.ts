@@ -1,26 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  signal,
+  OnInit,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, ActivatedRoute } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable, firstValueFrom, of } from 'rxjs';
 import { TaskService } from '../../services/todo.services';
 import { ITask, TaskTypes } from '../../models/todo.interface';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { AutoUnsub } from '../../../core/decorators/auto-unsub.decorator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSliderModule } from '@angular/material/slider';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { TodoEditItemComponent } from '../todoEditItem/todo-edit-item.component';
 import {
   rawTypeToRealType,
@@ -29,6 +26,13 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { TodoUserAssignComponent } from '../todoUserAssign/todo-user-assign.component';
+import { AuthService } from '../../../auth/services/auth.service';
+import { TaskApiService } from '../../services/task-api.service';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 export interface IEditData {
   title: string;
@@ -52,18 +56,55 @@ export interface IEditData {
     MatButtonModule,
     MatMenuModule,
     MatIconModule,
+    MatListModule,
+    MatCardModule,
+    MatExpansionModule,
+    TodoUserAssignComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 @AutoUnsub()
 export class TodoItemComponent implements OnInit {
   taskItem$: Observable<ITask | null> = of(null);
+  readonly panelOpenState = signal(false);
+  allUserUsernames: string[] = [];
+  assignUsersMode: boolean = false;
+  newAssignUsers: string[] = [];
+  userRole: string = '';
 
   constructor(
     private route: ActivatedRoute,
     public dialog: MatDialog,
-    private service: TaskService
+    private service: TaskService,
+    private taskApi: TaskApiService,
+    private authService: AuthService,
+    private cdr: ChangeDetectorRef
   ) {}
 
+  deleteAssignUser(id: number, user: string) {
+    this.taskApi.deleteAssignUserApi(id, user).subscribe({
+      next: (newTask) => {
+        this.taskItem$ = of(newTask);
+        this.cdr.detectChanges();
+      },
+    });
+  }
+
+  handleOptionSelected(event: MatAutocompleteSelectedEvent) {
+    this.newAssignUsers.push(event.option.value);
+  }
+
+  addAssignUsers(id: number) {
+    this.taskApi.addAssignUsersApi(id, this.newAssignUsers).subscribe({
+      next: (newTask) => {
+        this.taskItem$ = of(newTask);
+        this.cdr.detectChanges();
+      },
+    });
+  }
+  changeAssignUsersMode() {
+    this.assignUsersMode = !this.assignUsersMode;
+  }
   loadTask(): void {
     this.taskItem$ = this.route.paramMap.pipe(
       switchMap((params) => {
@@ -72,6 +113,7 @@ export class TodoItemComponent implements OnInit {
       })
     );
   }
+
   openDialog() {
     this.taskItem$.subscribe((task) => {
       if (task) {
@@ -115,12 +157,22 @@ export class TodoItemComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.taskItem$ = this.route.paramMap.pipe(
       switchMap((params) => {
         const taskId = Number(params.get('id'));
         return this.service.getTask(taskId);
       })
     );
+    try {
+      const allUsers = await firstValueFrom(this.authService.getUsers());
+      this.allUserUsernames = allUsers.map((user) => user.username);
+      const user = this.authService.getUserData();
+      if (user) {
+        this.userRole = user.role;
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
 }

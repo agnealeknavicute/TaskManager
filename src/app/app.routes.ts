@@ -5,6 +5,7 @@ import { TodoItemComponent } from './todo/components/todoItem/todo-item.componen
 import { LoginComponent } from './auth/components/login/login.component';
 import { SignupComponent } from './auth/components/signup/signup.component';
 import { AuthGuard } from './guards/auth.guard';
+import { LoginGuard } from './guards/login.guard';
 
 export const routes: Routes = [
   {
@@ -27,6 +28,14 @@ export const routes: Routes = [
     component: TodoItemComponent,
     canActivate: [AuthGuard],
   },
-  { path: 'app-login', component: LoginComponent },
-  { path: 'app-signup', component: SignupComponent },
+  {
+    path: 'app-login',
+    component: LoginComponent,
+    canActivate: [LoginGuard],
+  },
+  {
+    path: 'app-signup',
+    component: SignupComponent,
+    canActivate: [LoginGuard],
+  },
 ];

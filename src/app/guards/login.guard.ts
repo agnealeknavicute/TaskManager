@@ -6,27 +6,14 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
-
-  canActivate(): Observable<boolean> {
-    return this.authService.getIsUserObservable();
-  }
-}
-
 export class LoginGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(): boolean {
-    if (
-      this.authService.getIsUserObservable() &&
-      this.authService.getUserData()?.role === 'admin'
-    ) {
+    if (this.authService.getIsUser()) {
       this.router.navigate(['app-todo-list-component']);
-      debugger;
-      return true;
+      return false;
     } else {
-      debugger;
       return true;
     }
   }

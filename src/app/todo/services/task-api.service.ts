@@ -48,6 +48,24 @@ export class TaskApiService {
       data
     );
   }
+  deleteAssignUserApi(id: number, user: string): Observable<ITask> {
+    const data = {
+      deletedUser: user,
+    };
+    return this.http.post<ITask>(
+      environment.apiUrl + constants.DELETE_ASSIGN_USER + `/${id}`,
+      data
+    );
+  }
+  addAssignUsersApi(id: number, users: string[]): Observable<ITask> {
+    const data = {
+      newUsers: users,
+    };
+    return this.http.post<ITask>(
+      environment.apiUrl + constants.ADD_ASSIGN_USERS + `/${id}`,
+      data
+    );
+  }
 
   private handleError(error: any): Observable<never> {
     console.error('An error occurred', error);

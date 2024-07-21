@@ -6,4 +6,7 @@ export const constants = {
   UPDATE_NOTE: 'todoUpdate',
   LOGIN: 'login',
   SIGNUP: 'signup',
+  GET_USERS: 'users',
+  DELETE_ASSIGN_USER: 'todoDeleteAssignUser',
+  ADD_ASSIGN_USERS: 'todoAssignUpdate'
 };
