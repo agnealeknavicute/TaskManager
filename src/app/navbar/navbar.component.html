@@ -7,7 +7,7 @@
         </div>
 
         <div class="flex">
-            @if (userData.role === 'admin') {
+            @if (userData.roles.includes(Roles.admin)) {
               <li ><a class="mr-5 hover:cursor-pointer px-2 
                 py-2 rounded-sm hover:bg-purple-700" [routerLink]="['/app-todo-add-component']" ariaCurrentWhenActive="page" >Add task</a></li>
             }

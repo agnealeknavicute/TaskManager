@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { AuthService } from '../auth/services/auth.service';
 import { Observable } from 'rxjs';
+import { Roles } from '../auth/models/user.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -20,13 +21,11 @@ export class LoginGuard implements CanActivate {
   canActivate(): boolean {
     if (
       this.authService.getIsUserObservable() &&
-      this.authService.getUserData()?.role === 'admin'
+      this.authService.getUserData()?.roles.includes(Roles.admin)
     ) {
       this.router.navigate(['app-todo-list-component']);
-      debugger;
       return true;
     } else {
-      debugger;
       return true;
     }
   }

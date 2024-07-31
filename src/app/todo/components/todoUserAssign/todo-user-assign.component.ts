@@ -53,7 +53,7 @@ import { MatIconModule } from '@angular/material/icon';
 })
 @AutoUnsub()
 export class TodoUserAssignComponent {
-  @Input({ required: true }) allUsers!: string[];
+  @Input({ required: true }) allUsers: string[];
   @Output() optionSelected: EventEmitter<MatAutocompleteSelectedEvent> =
     new EventEmitter<MatAutocompleteSelectedEvent>();
 
@@ -63,7 +63,9 @@ export class TodoUserAssignComponent {
 
   usersForExport: string[] = [];
 
-  constructor() {}
+  constructor() {
+    this.allUsers = [];
+  }
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   readonly currentUser = model('');
   readonly users = signal<string[]>([]);
@@ -80,18 +82,11 @@ export class TodoUserAssignComponent {
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     this.usersForExport;
-    // Add our fruit
     if (value) {
       this.users.update((users) => [...users, value]);
     }
 
-    // Clear the input value
     this.currentUser.set('');
-  }
-
-  checkThatShit() {
-    console.log(this.usersForExport);
-    return this.usersForExport;
   }
 
   remove(user: string): void {
@@ -114,5 +109,4 @@ export class TodoUserAssignComponent {
     this.currentUser.set('');
     event.option.deselect();
   }
-  onNoClick(): void {}
 }

@@ -40,7 +40,7 @@ export class AuthService {
     localStorage.removeItem('isUser');
     localStorage.removeItem('user');
     this.storageSubj.next(false);
-    this.router.navigate(['app-login']);
+    this.router.navigate(['login']);
   }
 
   getUserData(): IUser | null {
@@ -61,7 +61,7 @@ export class AuthService {
   }
 
   login(
-    data: Omit<IUser, 'username' | 'id' | 'role'>
+    data: Omit<IUser, 'username' | 'id' | 'roles'>
   ): Observable<Omit<IUser, 'password'>> {
     return this.http.post<Omit<IUser, 'password'>>(
       environment.apiUrl + constants.LOGIN,

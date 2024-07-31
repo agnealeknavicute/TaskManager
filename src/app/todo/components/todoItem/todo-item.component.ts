@@ -3,11 +3,10 @@ import {
   Component,
   signal,
   OnInit,
-  ChangeDetectorRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, ActivatedRoute } from '@angular/router';
-import { Observable, firstValueFrom, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { TaskService } from '../../services/todo.services';
 import { ITask, TaskTypes } from '../../models/todo.interface';
 import { switchMap } from 'rxjs/operators';
@@ -33,6 +32,7 @@ import { TodoUserAssignComponent } from '../todoUserAssign/todo-user-assign.comp
 import { AuthService } from '../../../auth/services/auth.service';
 import { TaskApiService } from '../../services/task-api.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { Roles } from '../../../auth/models/user.interface';
 
 export interface IEditData {
   title: string;
@@ -67,27 +67,22 @@ export interface IEditData {
 export class TodoItemComponent implements OnInit {
   taskItem$: Observable<ITask | null> = of(null);
   readonly panelOpenState = signal(false);
-  allUserUsernames: string[] = [];
+  allUserUsernames$: Observable<string[]> = of([]);
   assignUsersMode: boolean = false;
   newAssignUsers: string[] = [];
-  userRole: string = '';
+  userRoles: Roles[] = [];
+  Roles = Roles;
 
   constructor(
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private service: TaskService,
     private taskApi: TaskApiService,
-    private authService: AuthService,
-    private cdr: ChangeDetectorRef
+    private authService: AuthService
   ) {}
 
   deleteAssignUser(id: number, user: string) {
-    this.taskApi.deleteAssignUserApi(id, user).subscribe({
-      next: (newTask) => {
-        this.taskItem$ = of(newTask);
-        this.cdr.detectChanges();
-      },
-    });
+    this.taskItem$ = this.taskApi.deleteAssignUserApi(id, user);
   }
 
   handleOptionSelected(event: MatAutocompleteSelectedEvent) {
@@ -95,12 +90,7 @@ export class TodoItemComponent implements OnInit {
   }
 
   addAssignUsers(id: number) {
-    this.taskApi.addAssignUsersApi(id, this.newAssignUsers).subscribe({
-      next: (newTask) => {
-        this.taskItem$ = of(newTask);
-        this.cdr.detectChanges();
-      },
-    });
+    this.taskItem$ = this.taskApi.addAssignUsersApi(id, this.newAssignUsers);
   }
   changeAssignUsersMode() {
     this.assignUsersMode = !this.assignUsersMode;
@@ -157,22 +147,19 @@ export class TodoItemComponent implements OnInit {
     });
   }
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
     this.taskItem$ = this.route.paramMap.pipe(
       switchMap((params) => {
         const taskId = Number(params.get('id'));
         return this.service.getTask(taskId);
       })
     );
-    try {
-      const allUsers = await firstValueFrom(this.authService.getUsers());
-      this.allUserUsernames = allUsers.map((user) => user.username);
-      const user = this.authService.getUserData();
-      if (user) {
-        this.userRole = user.role;
-      }
-    } catch (err) {
-      console.log(err);
+    this.allUserUsernames$ = this.authService
+      .getUsers()
+      .pipe(map((users) => users.map((user) => user.username)));
+    const user = this.authService.getUserData();
+    if (user) {
+      this.userRoles = user.roles;
     }
   }
 }

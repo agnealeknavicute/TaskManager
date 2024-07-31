@@ -46,14 +46,14 @@ export class SignupComponent {
       Validators.required,
       Validators.minLength(7),
     ]),
-    role: new FormControl(Roles.user, [Validators.required]),
+    role: new FormControl([Roles.user], [Validators.required]),
   });
   isSuccessful = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   redirectToLogin() {
-    this.router.navigate(['app-login']);
+    this.router.navigate(['login']);
   }
 
   submitForm() {
@@ -68,7 +68,7 @@ export class SignupComponent {
         email: this.signupForm.value.email,
         password: this.signupForm.value.password,
         username: this.signupForm.value.username,
-        role: this.signupForm.value.role,
+        roles: this.signupForm.value.role,
         id: id,
       };
       this.authService.signup(user).subscribe({

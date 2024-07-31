@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { TodoAddingComponent } from './todo/components/todoAdding/todo-adding.component.';
+import { TodoAddingComponent } from './todo/components/todoAdding/todo-adding.component';
 import { TodoListComponent } from './todo/components/todoList/todo-list.component';
 import { TodoItemComponent } from './todo/components/todoItem/todo-item.component';
 import { LoginComponent } from './auth/components/login/login.component';
@@ -29,12 +29,12 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'app-login',
+    path: 'login',
     component: LoginComponent,
     canActivate: [LoginGuard],
   },
   {
-    path: 'app-signup',
+    path: 'signup',
     component: SignupComponent,
     canActivate: [LoginGuard],
   },

@@ -87,7 +87,6 @@ export class TodoAddingComponent implements Partial<ITask>, OnInit {
 
   assignUser(user: string) {
     this.assignedUsers.push(user);
-    debugger;
   }
 
   submitTask() {

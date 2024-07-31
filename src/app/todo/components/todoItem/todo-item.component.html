@@ -3,7 +3,7 @@
         <span class="border-b mr-4 text-stone-500 border-stone-300">{{task.date}}</span>
         <span>{{task.type}}</span>
         <div>
-          @if (userRole === 'admin') {
+          @if (userRoles.includes(Roles.admin)) {
             <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
               <mat-icon>more_horiz</mat-icon>
             </button>
@@ -49,7 +49,7 @@
                     py-1
                     bg-stone-50">
                     <p>{{user}}</p>
-                    @if (userRole !== 'user') {
+                    @if (userRoles.includes(Roles.admin || Roles.manager) ) {
                       <mat-icon 
                       (click)="deleteAssignUser(task.id, user)"
                       class="text-stone-500 hover:cursor-pointer">remove</mat-icon>
@@ -65,7 +65,7 @@
               <p class="mb-1">No assigned users</p>
               
             }
-            @if (userRole !== 'user') {
+            @if (userRoles.includes(Roles.admin || Roles.manager) ) {
               <div class="border-t border-stone-300 pt-2">
                 <div>
                   @if (assignUsersMode) {
@@ -75,7 +75,7 @@
     
                     <app-todo-user-assign
                     (optionSelected)="handleOptionSelected($event)"
-                    [allUsers]="allUserUsernames"></app-todo-user-assign>
+                    [allUsers]="(allUserUsernames$ | async) ?? []"></app-todo-user-assign>
                     <div class="formSubmit float-right">
                       <button (click)="addAssignUsers(task.id)"  class="formSubmitBtn hover:cursor-pointer hover:bg-black">
                           Add

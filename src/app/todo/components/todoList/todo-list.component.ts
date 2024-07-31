@@ -31,8 +31,7 @@ export class TodoListComponent implements OnInit {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private taskService: TaskService,
-    private authService: AuthService,
-    private router: Router
+    private authService: AuthService
   ) {}
 
   deleteTask(id: number) {
