@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ITask, TaskStatus, TaskTypes } from '../../models/todo.interface';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -12,6 +12,14 @@ import { AutoUnsub } from '../../../core/decorators/auto-unsub.decorator';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import {
+  MatAutocompleteModule,
+  MatAutocompleteSelectedEvent,
+} from '@angular/material/autocomplete';
+import { MatChipsModule } from '@angular/material/chips';
+import { AuthService } from '../../../auth/services/auth.service';
+import { TodoUserAssignComponent } from '../todoUserAssign/todo-user-assign.component';
 
 @Component({
   selector: 'app-todo-add',
@@ -27,10 +35,15 @@ import { Router } from '@angular/router';
     ReactiveFormsModule,
     MatIconModule,
     MatButtonModule,
+    MatChipsModule,
+    MatAutocompleteModule,
+    FormsModule,
+    TodoUserAssignComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 @AutoUnsub()
-export class TodoAddingComponent implements Partial<ITask> {
+export class TodoAddingComponent implements Partial<ITask>, OnInit {
   taskForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3)]),
     description: new FormControl('', [
@@ -45,8 +58,18 @@ export class TodoAddingComponent implements Partial<ITask> {
   createdOn = null;
   status = TaskStatus.NotStarted;
   TaskTypes = TaskTypes;
+  assignedUsers: string[] = [];
+  allUserUsernames: string[] = [];
 
-  constructor(private router: Router, private taskService: TaskService) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private taskService: TaskService
+  ) {}
+
+  handleOptionSelected(event: MatAutocompleteSelectedEvent) {
+    this.assignedUsers.push(event.option.value);
+  }
 
   resetForm() {
     this.taskForm.reset({
@@ -60,6 +83,10 @@ export class TodoAddingComponent implements Partial<ITask> {
       control?.markAsPristine();
       control?.markAsUntouched();
     });
+  }
+
+  assignUser(user: string) {
+    this.assignedUsers.push(user);
   }
 
   submitTask() {
@@ -88,7 +115,6 @@ export class TodoAddingComponent implements Partial<ITask> {
     const user = localStorage.getItem('user');
     if (this.taskForm.value.title && this.taskForm.value.description && user) {
       const userId = JSON.parse(user)._id;
-
       const task: ITask = {
         userId: userId,
         id: id,
@@ -97,6 +123,7 @@ export class TodoAddingComponent implements Partial<ITask> {
         type: this.type,
         date: formattedDate,
         status: this.status,
+        assigned: this.assignedUsers,
       };
       this.taskService.addTask(task).subscribe(() => {
         this.resetForm();
@@ -106,5 +133,12 @@ export class TodoAddingComponent implements Partial<ITask> {
         this.router.navigate(['app-todo-list-component']);
       });
     }
+  }
+  ngOnInit(): void {
+    this.authService.getUsers().subscribe({
+      next: (allUsers) => {
+        this.allUserUsernames = allUsers.map((user) => user.username);
+      },
+    });
   }
 }

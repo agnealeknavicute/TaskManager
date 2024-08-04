@@ -9,7 +9,7 @@ import {
 import { AutoUnsub } from '../core/decorators/auto-unsub.decorator';
 import { AuthService } from '../auth/services/auth.service';
 import { Subscription } from 'rxjs';
-import { IUser } from '../auth/models/user.interface';
+import { IUser, Roles } from '../auth/models/user.interface';
 
 @Component({
   selector: 'app-navbar',
@@ -28,12 +28,13 @@ import { IUser } from '../auth/models/user.interface';
 export class NavbarComponent implements OnInit {
   isUser: boolean = true;
   userData: IUser | null = null;
+  Roles = Roles;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   logOut() {
     this.authService.logOut();
-    this.router.navigate(['app-login']);
+    this.router.navigate(['login']);
   }
 
   ngOnInit(): void {

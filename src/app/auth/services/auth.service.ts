@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environment/environment';
 import { constants } from '../../core/constants/app-constants';
 import { DOCUMENT } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,8 @@ export class AuthService {
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) {}
 
   setIsUser(value: boolean): void {
@@ -38,6 +40,7 @@ export class AuthService {
     localStorage.removeItem('isUser');
     localStorage.removeItem('user');
     this.storageSubj.next(false);
+    this.router.navigate(['login']);
   }
 
   getUserData(): IUser | null {
@@ -58,14 +61,20 @@ export class AuthService {
   }
 
   login(
-    data: Omit<IUser, 'username' | 'id'>
+    data: Omit<IUser, 'username' | 'id' | 'roles'>
   ): Observable<Omit<IUser, 'password'>> {
     return this.http.post<Omit<IUser, 'password'>>(
       environment.apiUrl + constants.LOGIN,
       data
     );
   }
-  signup(data: IUser): Observable<string> {
-    return this.http.post<string>(environment.apiUrl + constants.SIGNUP, data);
+  signup(data: IUser): Observable<Omit<IUser, 'password'>> {
+    return this.http.post<Omit<IUser, 'password'>>(
+      environment.apiUrl + constants.SIGNUP,
+      data
+    );
+  }
+  getUsers(): Observable<IUser[]> {
+    return this.http.get<IUser[]>(environment.apiUrl + constants.GET_USERS);
   }
 }

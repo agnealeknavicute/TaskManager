@@ -17,6 +17,7 @@ export interface ITask {
   type: TaskTypes;
   date: string | null;
   status: TaskStatus;
+  assigned: string[];
 }
 
 export type ITaskList = ITask[];

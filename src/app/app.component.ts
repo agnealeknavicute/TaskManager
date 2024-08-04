@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TodoListComponent } from './todo/components/todoList/todo-list.component';
-import { TodoAddingComponent } from './todo/components/todoAdding/todo-adding.component.';
+import { TodoAddingComponent } from './todo/components/todoAdding/todo-adding.component';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from './auth/services/auth.service';

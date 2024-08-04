@@ -7,13 +7,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { IUser } from '../../models/user.interface';
+import { IUser, Roles } from '../../models/user.interface';
 import { AuthService } from '../../services/auth.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @Component({
   selector: 'app-signup',
@@ -26,6 +27,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatIconModule,
     ReactiveFormsModule,
     MatButtonModule,
+    MatButtonToggleModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 
@@ -44,34 +46,37 @@ export class SignupComponent {
       Validators.required,
       Validators.minLength(7),
     ]),
+    role: new FormControl([Roles.user], [Validators.required]),
   });
   isSuccessful = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   redirectToLogin() {
-    this.router.navigate(['app-login']);
+    this.router.navigate(['login']);
   }
 
   submitForm() {
     if (
       this.signupForm.value.email &&
       this.signupForm.value.password &&
-      this.signupForm.value.username
+      this.signupForm.value.username &&
+      this.signupForm.value.role
     ) {
       const id = new Date().getTime().toString();
       const user: IUser = {
         email: this.signupForm.value.email,
         password: this.signupForm.value.password,
         username: this.signupForm.value.username,
+        roles: this.signupForm.value.role,
         id: id,
       };
       this.authService.signup(user).subscribe({
         next: (res) => {
-          if (res === 'Signup successful') {
-            this.isSuccessful = true;
-            this.router.navigate(['/app-login']);
-          }
+          this.isSuccessful = true;
+          localStorage.setItem('user', JSON.stringify(res));
+          this.authService.setIsUser(true);
+          this.router.navigate(['app-todo-list-component']);
         },
         error: (err) => {
           console.log(err);
@@ -79,5 +84,4 @@ export class SignupComponent {
       });
     }
   }
-
 }

@@ -1,7 +1,5 @@
-import { Component, Inject } from '@angular/core';
 import { AutoUnsub } from '../../../core/decorators/auto-unsub.decorator';
 import {
-  MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA,
   MatDialogClose,
@@ -11,12 +9,29 @@ import { MatButtonModule } from '@angular/material/button';
 import { IEditData, TodoItemComponent } from '../todoItem/todo-item.component';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-  MatSlider,
-  MatSliderModule,
-  MatSliderThumb,
-} from '@angular/material/slider';
+import { MatSliderModule } from '@angular/material/slider';
 import { MatSelectModule } from '@angular/material/select';
+import { CommonModule } from '@angular/common';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  model,
+  signal,
+  Inject,
+  Input,
+} from '@angular/core';
+import {
+  MatAutocompleteModule,
+  MatAutocompleteSelectedEvent,
+} from '@angular/material/autocomplete';
+import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { TodoUserAssignComponent } from '../todoUserAssign/todo-user-assign.component';
 
 @Component({
   selector: 'app-todo-edit-item',
@@ -24,6 +39,7 @@ import { MatSelectModule } from '@angular/material/select';
   templateUrl: './todo-edit-item.component.html',
   styleUrl: './todo-edit-item.component.scss',
   imports: [
+    CommonModule,
     MatButtonModule,
     MatInputModule,
     MatSliderModule,
@@ -31,7 +47,13 @@ import { MatSelectModule } from '@angular/material/select';
     FormsModule,
     MatSelectModule,
     ReactiveFormsModule,
+    MatAutocompleteModule,
+    MatIconModule,
+    MatChipsModule,
+    MatFormFieldModule,
+    TodoUserAssignComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 @AutoUnsub()
 export class TodoEditItemComponent {

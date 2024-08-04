@@ -36,6 +36,15 @@
               </mat-form-field>
               
         </div>
+        <div class="mb-6 text-center">
+          <mat-button-toggle-group 
+          formControlName="role"
+          appearance="legacy"  name="fontStyle" aria-label="Font Style">
+            <mat-button-toggle class="text-purple-700 text-sm px-1" value="admin">Admin</mat-button-toggle>
+            <mat-button-toggle class="text-purple-700 text-sm px-1" value="manager">Manager</mat-button-toggle>
+            <mat-button-toggle class="text-purple-700 text-sm px-1" value="user">User</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
         <button (click)="redirectToLogin()" color="signup" mat-stroked-button >
             Login
         </button>

@@ -1,4 +1,4 @@
-<div class="md:w-2/6 w-4/5 mx-auto py-12 border border-black px-6 rounded-lg mt-10">
+<div class="md:w-5/12 w-4/5 mx-auto py-12 border border-black px-6 rounded-lg mt-10">
     <div class="form">
         <h2 class="text-lg mb-5">Add new task</h2>
 
@@ -32,6 +32,10 @@
           <mat-slider min="1" max="3" step="1">
               <input formControlName="rawType" matSliderThumb value="2">
             </mat-slider>
+            <app-todo-user-assign 
+            (optionSelected)="handleOptionSelected($event)"
+            [allUsers]="allUserUsernames"></app-todo-user-assign>
+
       </div>
       <div class="formSubmit">
         <button type="submit" [disabled]="!taskForm.valid" class="formSubmitBtn hover:cursor-pointer hover:bg-black">
@@ -39,7 +43,6 @@
           </button>
       </div>
           </form>
-
         </div>
         
 </div>

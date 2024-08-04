@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
   ) {}
 
   redirectToSignup() {
-    this.router.navigate(['app-signup']);
+    this.router.navigate(['signup']);
   }
 
   submitForm() {
