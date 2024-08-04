@@ -67,7 +67,9 @@ export interface IEditData {
 export class TodoItemComponent implements OnInit {
   taskItem$: Observable<ITask | null> = of(null);
   readonly panelOpenState = signal(false);
-  allUserUsernames$: Observable<string[]> = of([]);
+  allUserUsernames$: Observable<string[]> = this.authService
+    .getUsers()
+    .pipe(map((users) => users.map((user) => user.username)));
   assignUsersMode: boolean = false;
   newAssignUsers: string[] = [];
   userRoles: Roles[] = [];
@@ -154,9 +156,7 @@ export class TodoItemComponent implements OnInit {
         return this.service.getTask(taskId);
       })
     );
-    this.allUserUsernames$ = this.authService
-      .getUsers()
-      .pipe(map((users) => users.map((user) => user.username)));
+
     const user = this.authService.getUserData();
     if (user) {
       this.userRoles = user.roles;
